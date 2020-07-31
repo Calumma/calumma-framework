@@ -1,10 +1,10 @@
 {
   "name": "calumma-framework",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Made with create-react-library",
   "author": "Filipe Santiago",
   "license": "MIT",
-  "repository": "Filipe Santiago/calumma-framework",
+  "repository": "FilipeSantiago/calumma-framework",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
@@ -12,8 +12,8 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs",
+    "build": "microbundle-crl --no-compress --format modern,cjs --jsxFragment React.Fragment",
+    "start": "microbundle-crl watch --no-compress  --format modern,cjs --jsxFragment React.Fragment",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",

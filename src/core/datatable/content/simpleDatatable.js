@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Paper, Table, TableHead, TableCell, TableRow, TableBody, Typography, TableSortLabel } from '@material-ui/core';
 import SimplePagination from '../pagination/simplePagination'
 import { useTranslation } from 'react-i18next'
@@ -33,7 +33,7 @@ const SimpleDataTable = (props) => {
     const isInOrderBy = (field) => {
         let isInOrderBy = false;
         props.orderBy.map(x => {
-            if(x["field"] === field)
+            if (x["field"] === field)
                 isInOrderBy = true;
             return x;
         });
@@ -46,17 +46,17 @@ const SimpleDataTable = (props) => {
     }
 
     const setOrderBy = (field) => {
-        if(isInOrderBy(field)){
-            if(getOrderDirection(field) === 'asc'){
+        if (isInOrderBy(field)) {
+            if (getOrderDirection(field) === 'asc') {
                 props.setOrderBy(props.orderBy.map(x => {
-                    if(x["field"] === field)
+                    if (x["field"] === field)
                         x["order"] = 'desc'
                     return x;
                 }))
-            }else{
+            } else {
                 props.setOrderBy(props.orderBy.filter(x => x["field"] !== field))
             }
-        }else {
+        } else {
             props.setOrderBy(props.orderBy.concat([{ "field": field, "order": props.orderBy.order === 'desc' ? 'desc' : 'asc' }]))
         }
     }
@@ -66,7 +66,7 @@ const SimpleDataTable = (props) => {
             <TableCell key={name}>
                 <TableSortLabel
                     active={isInOrderBy(value)}
-                    direction={isInOrderBy(value) ?  getOrderDirection(value) : 'asc'}
+                    direction={isInOrderBy(value) ? getOrderDirection(value) : 'asc'}
                     onClick={() => setOrderBy(value)}
                 >
                     <Typography color="textSecondary" variant="overline" style={{ fontSize: "0.8rem" }}>
@@ -108,6 +108,14 @@ const SimpleDataTable = (props) => {
         projections.splice(index, 1);
     }
 
+    const [isSelected, setIsSelected] = useState(Array.apply(null, { length: props.data.content.length }));
+
+    useEffect(() => {
+        if (props.data.length !== isSelected.length) {
+            setIsSelected(Array.apply(null, { length: props.data.content.length }));
+        }
+    }, [props.data]);
+
     return (
         <Paper>
             <Table>
@@ -124,32 +132,38 @@ const SimpleDataTable = (props) => {
 
                 <TableBody>
                     {
-                        props.data.content.map(row => (
-                            <TableRow key={row.id} hover={true}>
-                                {
-                                    projections.map((cell, index) => (
-                                        <Cell row={row} cellConfig={cell} />
-                                    ))
-                                }
+                        props.data.content.map((row, index) => {
+                            console.log(isSelected)
 
-                                <TableCell align="right" key={row.id + "-" + "buttons"} style={{ padding: "12px" }}>
+                            return (
+                                <TableRow key={row.id} hover={true} selected={isSelected[index]}>
                                     {
-                                        props.buttons ?
-                                            props.buttons.map(button => (
-                                                button({
-                                                    page: props.page,
-                                                    index: row.id,
-                                                    row: row,
-                                                    base_url: props.base_url,
-                                                    history: props.history,
-                                                    tableConfig: props.tableConfig,
-                                                    setTableConfig: props.setTableConfig
-                                                })
-                                            )) : ""
+                                        projections.map((cell, index) => (
+                                            <Cell key={index} row={row} cellConfig={cell} />
+                                        ))
                                     }
-                                </TableCell>
-                            </TableRow>
-                        ))
+
+                                    <TableCell align="right" key={row.id + "-" + "buttons"} style={{ padding: "12px" }}>
+                                        {
+                                            props.buttons ?
+                                                props.buttons.map(button => (
+                                                    button({
+                                                        page: props.page,
+                                                        index: row.id,
+                                                        row: row,
+                                                        base_url: props.base_url,
+                                                        history: props.history,
+                                                        tableConfig: props.tableConfig,
+                                                        setTableConfig: props.setTableConfig,
+                                                        rowIndex: index,
+                                                        setIsRowSelected: setIsSelected,
+                                                        isRowSelected: isSelected
+                                                    })
+                                                )) : ""
+                                        }
+                                    </TableCell>
+                                </TableRow>);
+                        })
                     }
                 </TableBody>
             </Table>
@@ -164,4 +178,4 @@ const SimpleDataTable = (props) => {
     );
 };
 
-export default  SimpleDataTable;
+export default SimpleDataTable;

@@ -7,7 +7,8 @@ import useDatatableTransmutation from './hooks/useDatatableTransmutation'
 
 const DataTableTemplate = (props) => {
     const [tableConfig, setTableConfig] = useState(props.queryParams);
-    const [orderBy, setOrderBy] = useState([{ field: "id", order: "asc" }]);
+    const [orderBy, setOrderBy] = useState(props.orderBy);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (props.setQueryParams) {
@@ -24,7 +25,10 @@ const DataTableTemplate = (props) => {
     }, [orderBy]);
 
     useEffect(() => {
+        setIsLoading(true)
         props.loadData(props.projections, props.filters, tableConfig, orderBy)
+            .then(() => setIsLoading(false))
+            .catch(() => setIsLoading(false));
     }, [props.queryParams, tableConfig, orderBy]);
 
     return (
@@ -37,6 +41,7 @@ const DataTableTemplate = (props) => {
                         setTableConfig={setTableConfig}
                         orderBy={orderBy}
                         setOrderBy={setOrderBy}
+                        isLoading={isLoading}
                         {...props}
                     />
                 </Grid>
@@ -55,6 +60,7 @@ DataTableTemplate.propTypes = {
     setData: PropTypes.func.isRequired,
 
     data: PropTypes.object,
+    orderBy: PropTypes.object,
 
     isCard: PropTypes.bool,
     onExpandCard: PropTypes.element,
@@ -69,7 +75,8 @@ DataTableTemplate.propTypes = {
 }
 
 DataTableTemplate.defaultProps = {
-    data: { content: [], totalElements: 0, pageable: { pageSize: 20, pageNumber: 0 } }
+    data: { content: [], totalElements: 0, pageable: { pageSize: 20, pageNumber: 0 } },
+    orderBy: [{ field: "id", order: "asc" }]
 }
 
 export default DataTableTemplate;

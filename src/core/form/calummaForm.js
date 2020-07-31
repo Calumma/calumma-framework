@@ -82,7 +82,7 @@ const CalummaForm = (props) => {
             </CalummaInnerForm>
         </MuiPickersUtilsProvider>
     );
-}
+};
 
 CalummaForm.propTypes = {
     values: PropTypes.object.isRequired,
@@ -92,6 +92,6 @@ CalummaForm.propTypes = {
     children: PropTypes.arrayOf(PropTypes.element),
     validator: PropTypes.object,
     context: PropTypes.object
-}
+};
 
-export default CalummaForm
+export default CalummaForm;

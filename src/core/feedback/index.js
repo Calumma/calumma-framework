@@ -9,8 +9,8 @@ import { amber, green, blue, red } from '@material-ui/core/colors';
 import WarningIcon from '@material-ui/icons/Warning';
 import { Snackbar, IconButton, SnackbarContent, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useFeedbackStore } from './useFeedback'
-import { useTranslation } from 'react-i18next'
+import useFeedback, { useFeedbackStore } from './useFeedback';
+import { useTranslation } from 'react-i18next';
 
 const variantIcon = {
     success: CheckCircleIcon,
@@ -148,4 +148,4 @@ export default function CustomizedSnackbars(props) {
     );
 }
 
-export { useFeedbackStore as useFeedback }
+export { useFeedback }
