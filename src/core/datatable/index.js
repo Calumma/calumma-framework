@@ -29,7 +29,7 @@ const DataTableTemplate = (props) => {
         props.loadData(props.projections, props.filters, tableConfig, orderBy)
             .then(() => setIsLoading(false))
             .catch(() => setIsLoading(false));
-    }, [props.queryParams, tableConfig, orderBy]);
+    }, [props.queryParams, tableConfig, orderBy, props.filters]);
 
     return (
         <Grid container>

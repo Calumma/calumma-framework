@@ -2,6 +2,7 @@ import { useHistory } from "react-router-dom";
 import useSecurity from "./useSecurity";
 
 const useCrud = relative_path => {
+
   let history = useHistory();
   let auth_header = {};
   const {
@@ -102,6 +103,20 @@ const useCrud = relative_path => {
     return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   };
 
+  let patch = async to_update_object => {
+    let request_details = {
+      method: 'PATCH',
+      credentials: 'omit',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        ...auth_header
+      },
+      body: JSON.stringify(to_update_object)
+    };
+    return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
+  }; 
+
   let remove = async url_parameters => {
     let request_details = {
       method: 'DELETE',
@@ -181,6 +196,7 @@ const useCrud = relative_path => {
     query,
     update,
     remove,
+    patch,
     signin
   };
 };

@@ -133,8 +133,6 @@ const SimpleDataTable = (props) => {
                 <TableBody>
                     {
                         props.data.content.map((row, index) => {
-                            console.log(isSelected)
-
                             return (
                                 <TableRow key={row.id} hover={true} selected={isSelected[index]}>
                                     {

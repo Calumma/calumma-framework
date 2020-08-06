@@ -16,7 +16,7 @@ const SimpleDataTable = (props) => {
             <Grid item>
                 <Typography variant="h6">
                     {props.title}:&nbsp;
-                        </Typography>
+                </Typography>
             </Grid>
             <Grid item>
                 <Grid container alignItems="center" style={{ "height": "100%" }}>
@@ -30,7 +30,12 @@ const SimpleDataTable = (props) => {
 
     const Cell = (props) => {
         if (typeof props.cellConfig === 'object') {
-            if (!props.cellConfig.isHidden) {
+            if (props.cellConfig.derivated) {
+                return (
+                    <CellValue title={t(props.cellConfig.name)} value={props.cellConfig.transmute(props.row)} />
+                );
+            }
+            else if (!props.cellConfig.isHidden) {
                 return (
                     <CellValue title={t(props.cellConfig.name)} value={props.cellConfig.transmute(props.row[props.cellConfig.name])} />
                 );
@@ -109,7 +114,8 @@ const SimpleDataTable = (props) => {
         const [expandedContent, setExpandedContent] = useState(<LinearProgress />);
 
         const onExpandCard = (props) => {
-            setExpandedContent(props.onExpandCard({ row: props.row, filters: props.filters, setTableConfig: props.setTableConfig })());
+            debugger
+            setExpandedContent(props.onExpandCard({ row: props.row, filters: props.filters, setTableConfig: props.setTableConfig }));
             setIsExpanded(true);
         }
 
@@ -164,7 +170,7 @@ const SimpleDataTable = (props) => {
         );
     };
 
-    let projections = _.cloneDeep(props.projections); 
+    let projections = _.cloneDeep(props.projections);
     const index = projections.indexOf("id");
 
     if (index > -1) {
@@ -204,4 +210,4 @@ const SimpleDataTable = (props) => {
     );
 };
 
-export default  SimpleDataTable;
+export default SimpleDataTable;
