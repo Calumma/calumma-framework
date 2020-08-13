@@ -3,9 +3,9 @@ import { Select, FormControl, InputLabel, MenuItem, FormHelperText } from '@mate
 import PropTypes from 'prop-types';
 
 const CalummaEnumSelect = (props) => {
- 
+
   return (
-    <FormControl fullWidth required={props.required ? props.required : false}  error={props.errors[props.name] ? props.errors[props.name].hasError : false}>
+    <FormControl fullWidth required={props.required ? props.required : false} error={props.errors[props.name] ? props.errors[props.name].hasError : false}>
       <InputLabel htmlFor={"select-" + props.name}>{props.label}</InputLabel>
       <Select
         disabled={props.disabled}
@@ -23,7 +23,7 @@ const CalummaEnumSelect = (props) => {
         }
       </Select>
       <FormHelperText>
-        {props.helperText}
+        {props.errors[props.name] ? props.errors[props.name].message : props.helperText}
       </FormHelperText>
     </FormControl>
   )
@@ -33,11 +33,11 @@ CalummaEnumSelect.propTypes = {
   name: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
-  required: PropTypes.bool,  
+  required: PropTypes.bool,
   disabled: PropTypes.bool,
   values: PropTypes.object,
   errors: PropTypes.object
 }
 
 CalummaEnumSelect.displayName = 'CalummaEnumSelect';
-export default  CalummaEnumSelect;
+export default CalummaEnumSelect;

@@ -11,22 +11,22 @@ import PropTypes from 'prop-types';
 const handleMultiLevelPropertyChange = (propertyLevels, values) => {
     let obj_test = undefined;
     let aux_obj = values;
-    for(let x = 0; x < propertyLevels.length; x++){
-        if(aux_obj[propertyLevels[x]])
+    for (let x = 0; x < propertyLevels.length; x++) {
+        if (aux_obj[propertyLevels[x]])
             aux_obj = aux_obj[propertyLevels[x]]
-        else{
+        else {
             aux_obj = undefined;
             break;
         }
     }
     obj_test = aux_obj
-    
+
     return obj_test;
 };
 
-const getValuesParemeter = (name, values)=> {
+const getValuesParemeter = (name, values) => {
     const propertyLevels = name.split(".");
-    if(propertyLevels.length == 1)
+    if (propertyLevels.length == 1)
         return values[name]
     return handleMultiLevelPropertyChange(propertyLevels, values);
 }
@@ -34,11 +34,26 @@ const getValuesParemeter = (name, values)=> {
 const getValue = (props) => {
     if (props.value)
         return props.value;
-    else if (props.values){
+    else if (props.values) {
         let property_potential_value = getValuesParemeter(props.name, props.values)
         return property_potential_value;
     }
     return undefined;
+}
+
+const getError = (props) => {
+    let finalError = { hasError: false, helperText: "" }
+
+    if (props.error) {
+        finalError.hasError = props.error;
+        if (props.errorMessage)
+            finalError.message = props.errorMessage;
+    } else if (props.errors[props.name]) {
+        console.log(props.errors[props.name]);
+        finalError = props.errors[props.name];
+    }
+
+    return finalError;
 }
 
 const CalummaAutoComplete = (props) => {
@@ -96,9 +111,10 @@ const CalummaAutoComplete = (props) => {
             value={currentValue}
             inputValue={currentValue ? currentValue[props.field] : actualSearch}
             multiple={props.multiple}
+            disabled={props.disabled}
             open={open}
             onOpen={() => {
-                if(!props.disabled)
+                if (!props.disabled)
                     setOpen(true);
             }}
             onClose={() => {
@@ -111,7 +127,7 @@ const CalummaAutoComplete = (props) => {
             }}
             onInputChange={
                 (event, value, reason) => {
-                    if(!props.disabled)
+                    if (!props.disabled)
                         setActualSearch(value);
                 }
             }
@@ -127,8 +143,8 @@ const CalummaAutoComplete = (props) => {
                     {...props}
                     name={props.name}
                     value={currentValue}
-                    error={props.errors[props.name] ? props.errors[props.name].hasError : false}
-                    helperText={props.errors[props.name] ? props.errors[props.name].message : props.helperText}
+                    error={getError(props).hasError}
+                    helperText={getError(props).message}
                     fullWidth
                 />
             )}
