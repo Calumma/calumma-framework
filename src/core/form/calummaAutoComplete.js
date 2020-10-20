@@ -49,7 +49,6 @@ const getError = (props) => {
         if (props.errorMessage)
             finalError.message = props.errorMessage;
     } else if (props.errors[props.name]) {
-        console.log(props.errors[props.name]);
         finalError = props.errors[props.name];
     }
 

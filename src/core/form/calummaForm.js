@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import ptBrLocale from "date-fns/locale/pt-BR";
@@ -72,14 +72,28 @@ const CalummaInnerForm = (props) => {
 
 const CalummaForm = (props) => {
     let properties = Object.assign({}, props);
+    let alertMessage = useRef(null);
     delete properties.children;
+
+    if(Object.keys(props.errors).length > 0 && props.errorAlert && alertMessage.current != null){
+        window.scrollTo(0, alertMessage.current.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+    }
+
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBrLocale}>
-            <CalummaInnerForm {...properties}>
-                <React.Fragment>
-                    {props.children}
-                </React.Fragment>
-            </CalummaInnerForm>
+            <div>
+                <div ref={alertMessage}>
+                    {
+                        (Object.keys(props.errors).length > 0 && props.errorAlert) ?
+                            props.errorAlert : ""
+                    }
+                </div>
+                <CalummaInnerForm {...properties}>
+                    <React.Fragment>
+                        {props.children}
+                    </React.Fragment>
+                </CalummaInnerForm>
+            </div>
         </MuiPickersUtilsProvider>
     );
 };

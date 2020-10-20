@@ -114,7 +114,6 @@ const SimpleDataTable = (props) => {
         const [expandedContent, setExpandedContent] = useState(<LinearProgress />);
 
         const onExpandCard = (props) => {
-            debugger
             setExpandedContent(props.onExpandCard({ row: props.row, filters: props.filters, setTableConfig: props.setTableConfig }));
             setIsExpanded(true);
         }

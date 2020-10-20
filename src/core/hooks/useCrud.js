@@ -1,19 +1,25 @@
 import { useHistory } from "react-router-dom";
 import useSecurity from "./useSecurity";
 
-const useCrud = relative_path => {
+const test = async () => { return {}; }
+
+const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
 
   let history = useHistory();
   let auth_header = {};
   const {
     getUserIdentity
   } = useSecurity();
-  let auth_credentials = getUserIdentity();
 
-  if (auth_credentials && auth_credentials.token != null) {
+  let auth_credentials = undefined;
+  
+  auth_credentials = getUserIdentity();
+
+  if (auth_credentials && custom_auth_header == null) {
     auth_header = {
       'Authorization': auth_credentials.token
     };
+    custom_auth_header=test;
   }
 
   let create = async to_insert_object => {
@@ -23,10 +29,15 @@ const useCrud = relative_path => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        ...auth_header
+        ...auth_header,
+        ...(await custom_auth_header())
       },
       body: JSON.stringify(to_insert_object)
     };
+
+    console.log("custom_auth_header", await custom_auth_header());
+    console.log("default", auth_header);
+
     return fetch(relative_path, request_details).then(response => processResponse(response), error => processHttpCodeError(error));
   };
 
@@ -40,10 +51,15 @@ const useCrud = relative_path => {
       credentials: 'omit',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        ...auth_header
+        ...auth_header,
+        ...(await custom_auth_header())
       },
       body: body
     };
+
+    console.log("custom_auth_header", await custom_auth_header());
+    console.log("default", auth_header);
+
     return fetch(relative_path, request_details).then(response => processResponse(response), error => processHttpCodeError(error));
   };
 
@@ -53,10 +69,15 @@ const useCrud = relative_path => {
       credentials: 'omit',
       headers: {
         'Accept': 'application/json',
-        ...auth_header
+        ...auth_header,
+        ...(await custom_auth_header())
       },
       body: to_insert_object
     };
+
+    console.log("custom_auth_header", await custom_auth_header());
+    console.log("default", auth_header);
+
     return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   };
 
@@ -67,9 +88,14 @@ const useCrud = relative_path => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        ...auth_header
+        ...auth_header,
+        ...(await custom_auth_header())
       }
     };
+
+    console.log("custom_auth_header", await custom_auth_header());
+    console.log("default", auth_header);
+
     const url = new URL(relative_path + url_parameters);
     if (search_parameters !== null && search_parameters !== undefined) Object.keys(search_parameters).forEach(key => url.searchParams.append(key, search_parameters[key]));
     return fetch(url, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
@@ -82,10 +108,15 @@ const useCrud = relative_path => {
       headers: {
         'Accept': 'multipart/form-data',
         'Content-Type': 'application/json',
-        ...auth_header
+        ...auth_header,
+        ...(await custom_auth_header())
       },
       body: JSON.stringify(to_insert_object)
     };
+
+    console.log("custom_auth_header", await custom_auth_header());
+    console.log("default", auth_header);
+
     return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   };
 
@@ -96,10 +127,15 @@ const useCrud = relative_path => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        ...auth_header
+        ...auth_header,
+        ...(await custom_auth_header())
       },
       body: JSON.stringify(to_update_object)
     };
+
+    console.log("custom_auth_header", await custom_auth_header());
+    console.log("default", auth_header);
+
     return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   };
 
@@ -110,10 +146,15 @@ const useCrud = relative_path => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        ...auth_header
+        ...auth_header,
+        ...(await custom_auth_header())
       },
       body: JSON.stringify(to_update_object)
     };
+
+    console.log("custom_auth_header", await custom_auth_header());
+    console.log("default", auth_header);
+    
     return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   }; 
 
@@ -124,9 +165,15 @@ const useCrud = relative_path => {
       headers: {
         'Accept': '*',
         'Content-Type': 'text/plain',
-        ...auth_header
+        ...auth_header,
+        ...(await custom_auth_header())
       }
     };
+
+    console.log("custom_auth_header", await custom_auth_header());
+    console.log("default", auth_header);
+
+
     const url = new URL(relative_path + url_parameters);
     return fetch(url, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   };
@@ -143,7 +190,8 @@ const useCrud = relative_path => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        ...auth_header
+        ...auth_header,
+        ...(await custom_auth_header())
       }
     };
     let projections = "projection=" + projection.filter(x => !x.derivated).map(x => typeof x === 'object' ? x.name : x).join(",");
@@ -156,13 +204,16 @@ const useCrud = relative_path => {
       size = config.size ? "&size=" + config.size : "";
     }
 
+    console.log("custom_auth_header", await custom_auth_header());
+    console.log("default", auth_header);
+
     let queryString = "?" + projections + filters_str + groupBy + page + size + orderBy;
     let url = new URL(relative_path + url_parameters + queryString);
     return fetch(url.toString(), request_details).then(response => processResponse(response), error => processHttpCodeError(error));
   };
 
   const processResponse = response => {
-    let signinPage = process.env.SIGN_IN_URL ? process.env.SIGN_IN_URL : "/";
+    let signinPage = redirect_401 ? redirect_401 : "/";
 
     if (response.status === 401) {
       history.push(signinPage);
