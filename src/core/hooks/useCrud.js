@@ -35,9 +35,6 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
       body: JSON.stringify(to_insert_object)
     };
 
-    console.log("custom_auth_header", await custom_auth_header());
-    console.log("default", auth_header);
-
     return fetch(relative_path, request_details).then(response => processResponse(response), error => processHttpCodeError(error));
   };
 
@@ -57,9 +54,6 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
       body: body
     };
 
-    console.log("custom_auth_header", await custom_auth_header());
-    console.log("default", auth_header);
-
     return fetch(relative_path, request_details).then(response => processResponse(response), error => processHttpCodeError(error));
   };
 
@@ -75,9 +69,6 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
       body: to_insert_object
     };
 
-    console.log("custom_auth_header", await custom_auth_header());
-    console.log("default", auth_header);
-
     return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   };
 
@@ -92,9 +83,6 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
         ...(await custom_auth_header())
       }
     };
-
-    console.log("custom_auth_header", await custom_auth_header());
-    console.log("default", auth_header);
 
     const url = new URL(relative_path + url_parameters);
     if (search_parameters !== null && search_parameters !== undefined) Object.keys(search_parameters).forEach(key => url.searchParams.append(key, search_parameters[key]));
@@ -114,9 +102,6 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
       body: JSON.stringify(to_insert_object)
     };
 
-    console.log("custom_auth_header", await custom_auth_header());
-    console.log("default", auth_header);
-
     return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   };
 
@@ -132,9 +117,6 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
       },
       body: JSON.stringify(to_update_object)
     };
-
-    console.log("custom_auth_header", await custom_auth_header());
-    console.log("default", auth_header);
 
     return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   };
@@ -152,9 +134,6 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
       body: JSON.stringify(to_update_object)
     };
 
-    console.log("custom_auth_header", await custom_auth_header());
-    console.log("default", auth_header);
-    
     return fetch(relative_path, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   }; 
 
@@ -170,11 +149,24 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
       }
     };
 
-    console.log("custom_auth_header", await custom_auth_header());
-    console.log("default", auth_header);
-
-
     const url = new URL(relative_path + url_parameters);
+    return fetch(url, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
+  };
+
+  let remove_object = async to_update_object => {
+    let request_details = {
+      method: 'DELETE',
+      credentials: 'omit',
+      headers: {
+        'Accept': '*',
+        'Content-Type': 'text/plain',
+        ...auth_header,
+        ...(await custom_auth_header())
+      },
+      body: JSON.stringify(to_update_object)
+    };
+
+    const url = new URL(relative_path);
     return fetch(url, request_details).then(response => processResponse(response)).catch(error => processHttpCodeError(error));
   };
 
@@ -203,9 +195,6 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
       page = config.page ? "&page=" + config.page : "";
       size = config.size ? "&size=" + config.size : "";
     }
-
-    console.log("custom_auth_header", await custom_auth_header());
-    console.log("default", auth_header);
 
     let queryString = "?" + projections + filters_str + groupBy + page + size + orderBy;
     let url = new URL(relative_path + url_parameters + queryString);
@@ -247,8 +236,9 @@ const useCrud = (relative_path, custom_auth_header=null, redirect_401="/") => {
     query,
     update,
     remove,
+    remove_object,
     patch,
-    signin
+    signin,
   };
 };
 

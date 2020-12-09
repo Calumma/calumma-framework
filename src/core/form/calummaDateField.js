@@ -15,7 +15,7 @@ const CalummaDateField = (props) => {
     return (
         <KeyboardDatePicker
             id={"calumma-time-" + Math.random() * 10000}
-            value={props.values[props.name]}
+            value={props.value ? props.value: props.values[props.name]}
             error={props.errors[props.name] ? props.errors[props.name].hasError : false}
             helperText={props.errors[props.name] ? props.errors[props.name].message : otherProperties.helperText}
             onChange={(date) => props.onChange(undefined, props.name, date)}
