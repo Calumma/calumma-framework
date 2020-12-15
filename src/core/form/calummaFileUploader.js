@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone';
-import { Grid, Button, IconButton, Typography, Tooltip  } from '@material-ui/core';
+import { Grid, Button, IconButton, Typography, Tooltip } from '@material-ui/core';
 import useCrud from '../hooks/useCrud'
 import CancelIcon from '@material-ui/icons/Cancel';
 import AttachFile from '@material-ui/icons/AttachFile';
@@ -66,8 +66,9 @@ function FileUploader(props) {
         var data = new FormData();
 
         for (var i = 0; i < acceptedFiles.files.length; i++) {
-            data.append('files', acceptedFiles.files[i], acceptedFiles.files[i].name)
+            data.append('files', acceptedFiles.files[i])
         }
+
         setIsLoading(true);
         create_file(data)
             .then((result) => {
@@ -95,16 +96,26 @@ function FileUploader(props) {
         accept: props.acceptedTypes ? props.acceptedTypes : ['image/*', '.pdf'],
         noClick: true,
         onDrop: acceptedFiles => {
-            uploadFiles({ files: acceptedFiles });
+            if (props.path) {
+                uploadFiles({ files: acceptedFiles });
+            } else {
+                setFiles(acceptedFiles);
+                setFilesInfo(acceptedFiles);
+            }
         }
     });
 
     const removeFile = function (path) {
-        remove(path)
-            .then(() => {
-                setFiles(files.filter(file => file.customPath !== path));
-                setFilesInfo(filesInfo.filter(file => file !== path));
-            });
+        if (props.path) {
+            remove(path)
+                .then(() => {
+                    setFiles(files.filter(file => file.customPath !== path));
+                    setFilesInfo(filesInfo.filter(file => file !== path));
+                });
+        } else {
+            setFiles(files.filter(file => file.customPath !== path));
+            setFilesInfo(filesInfo.filter(file => file !== path));
+        }
     };
 
 
