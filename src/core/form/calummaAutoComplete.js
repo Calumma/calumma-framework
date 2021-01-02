@@ -108,7 +108,6 @@ const CalummaAutoComplete = (props) => {
             onChange={props.onChange}
             name={props.name}
             value={currentValue}
-            inputValue={currentValue ? currentValue[props.field] : actualSearch}
             multiple={props.multiple}
             disabled={props.disabled}
             open={open}
