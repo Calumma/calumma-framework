@@ -5,19 +5,22 @@ import PropTypes from 'prop-types';
 const handleMultiLevelPropertyChange = (propertyLevels, values) => {
     let obj_test = undefined;
     let aux_obj = values;
-    for (let x = 0; x < propertyLevels.length; x++) {
-        if (aux_obj[propertyLevels[x]])
-            aux_obj = aux_obj[propertyLevels[x]]
-        else {
-            aux_obj = undefined;
-            break;
+
+    if (aux_obj != undefined) {
+        for (let x = 0; x < propertyLevels.length; x++) {
+            if (aux_obj[propertyLevels[x]])
+                aux_obj = aux_obj[propertyLevels[x]]
+            else {
+                aux_obj = undefined;
+                break;
+            }
         }
+        obj_test = aux_obj
+
+        if (obj_test == undefined)
+            return null
     }
-    obj_test = aux_obj
-
-    if(obj_test == undefined)
-        return null
-
+    
     return obj_test;
 };
 
@@ -45,7 +48,7 @@ const CalummaTextField = (props) => {
 CalummaTextField.propTypes = {
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    
+
     values: PropTypes.object,
     errors: PropTypes.object,
 
@@ -53,4 +56,4 @@ CalummaTextField.propTypes = {
 }
 
 CalummaTextField.displayName = 'CalummaTextField';
-export default  CalummaTextField;
+export default CalummaTextField;
