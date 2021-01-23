@@ -99,9 +99,10 @@ const CalummaAutoComplete = (props) => {
     }, [props.value, props.values]);
 
     let currentValue = getValue(props);
-    let key = "asynchronous-" + props.name + currentValue;
+    let valueInput = !currentValue ? "" : currentValue["id"]
+    let key = "asynchronous-" + props.name + valueInput;
 
-    console.log(key, props.name, currentValue)
+    console.log("autoComplete -> ", key);
     return (
         <Autocomplete
             key={key}
