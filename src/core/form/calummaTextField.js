@@ -20,7 +20,7 @@ const handleMultiLevelPropertyChange = (propertyLevels, values) => {
         if (obj_test == undefined)
             return null
     }
-    
+
     return obj_test;
 };
 
@@ -35,11 +35,13 @@ const CalummaTextField = (props) => {
 
     return (
         <TextField
-            id={"calumma-" + Math.random() * 10000}
             value={getValuesParemeter(props.name, props.values)}
             error={props.errors[props.name] ? props.errors[props.name].hasError : false}
             helperText={props.errors[props.name] ? props.errors[props.name].message : props.helperText}
             onChange={props.onChange}
+            inputProps={{
+                autoComplete: "new-password"
+            }}
             {...props}
         />
     );

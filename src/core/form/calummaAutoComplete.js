@@ -135,17 +135,23 @@ const CalummaAutoComplete = (props) => {
             loading={loading}
             disableCloseOnSelect={props.disableCloseOnSelect}
             renderOption={props.useCheckbox ? useCheckbox : undefined}
-            renderInput={params => (
-                <TextField
-                    {...params}
-                    {...props}
-                    name={props.name}
-                    value={currentValue}
-                    error={getError(props).hasError}
-                    helperText={getError(props).message}
-                    fullWidth
-                />
-            )}
+            renderInput={params => {
+
+                params["inputProps"]["form"] = {
+                    autocomplete: 'off'
+                };
+
+                return (
+                    <TextField
+                        {...params}
+                        {...props}
+                        name={props.name}
+                        value={currentValue}
+                        error={getError(props).hasError}
+                        helperText={getError(props).message}
+                        fullWidth
+                    />)
+            }}
         />
     );
 };
