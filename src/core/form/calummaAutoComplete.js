@@ -99,9 +99,10 @@ const CalummaAutoComplete = (props) => {
     }, [props.value, props.values]);
 
     let currentValue = getValue(props);
+    console.log(props.name, currentValue)
     return (
         <Autocomplete
-            id="asynchronous-demo"
+            key={"calumma-time-" + Math.random() * 10000}
             autoComplete={props.autoComplete}
             autoSelect={props.autoSelect}
             autoHighlight={true}
