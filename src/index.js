@@ -2,7 +2,8 @@ import React from 'react'
 import styles from './styles.module.css'
 import {
   useCrud, useSecurity, CalummaForm, CalummaDateField, CalummaTimeField, CalummaTextField, CalummaAutoComplete, Feedback, CalummaErrorAlert,
-  CalummaServerSelect, CalummaEnumSelect, CalummaFileUploader, useForm, Yup, useFeedback, CalummaDatatable, useDatatableTransmutation
+  CalummaDateTimeField, CalummaServerSelect, CalummaEnumSelect, CalummaFileUploader, useForm, Yup, useFeedback, CalummaDatatable, 
+  useDatatableTransmutation
 } from './core'
 
 export const ExampleComponent = ({ text }) => {
@@ -10,6 +11,7 @@ export const ExampleComponent = ({ text }) => {
 }
 
 export {
-  useCrud, useSecurity, CalummaForm, CalummaDateField, CalummaTimeField, CalummaTextField, CalummaAutoComplete, Feedback, CalummaErrorAlert,
-  CalummaServerSelect, CalummaEnumSelect, CalummaFileUploader, useForm, Yup, useFeedback, CalummaDatatable, useDatatableTransmutation
+  useCrud, useSecurity, CalummaForm, CalummaDateField, CalummaTimeField, CalummaDateTimeField, CalummaTextField, CalummaAutoComplete, Feedback, 
+  CalummaErrorAlert, CalummaServerSelect, CalummaEnumSelect, CalummaFileUploader, useForm, Yup, useFeedback, CalummaDatatable, 
+  useDatatableTransmutation
 }
