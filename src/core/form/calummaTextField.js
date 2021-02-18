@@ -31,13 +31,27 @@ const getValuesParemeter = (name, values) => {
     return handleMultiLevelPropertyChange(propertyLevels, values);
 }
 
+const getError = (props) => {
+    let finalError = { hasError: false, helperText: "" }
+
+    if (props.error) {
+        finalError.hasError = props.error;
+        if (props.errorMessage)
+            finalError.message = props.errorMessage;
+    } else if (props.errors && props.errors[props.name]) {
+        finalError = props.errors[props.name];
+    }
+
+    return finalError;
+}
+
 const CalummaTextField = (props) => {
 
     return (
         <TextField
-            value={getValuesParemeter(props.name, props.values)}
-            error={props.errors[props.name] ? props.errors[props.name].hasError : false}
-            helperText={props.errors[props.name] ? props.errors[props.name].message : props.helperText}
+            value={props.values ? getValuesParemeter(props.name, props.values) : props.value}
+            error={getError(props).hasError}
+            helperText={getError(props).message}
             onChange={props.onChange}
             inputProps={{
                 autoComplete: "new-password"
