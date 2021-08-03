@@ -1,6 +1,6 @@
 {
   "name": "calumma-framework",
-  "version": "1.0.17",
+  "version": "1.0.16",
   "description": "Made with create-react-library",
   "author": "Filipe Santiago",
   "license": "MIT",
@@ -15,11 +15,7 @@
     "build": "microbundle-crl --no-compress --format modern,cjs --jsxFragment React.Fragment",
     "start": "microbundle-crl watch --no-compress  --format modern,cjs --jsxFragment React.Fragment",
     "prepare": "run-s build",
-    "test": "run-s test:unit test:lint test:build",
-    "test:build": "run-s build",
-    "test:lint": "eslint .",
-    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom",
+    "test": "echo \"No test specified\"",
     "predeploy": "cd example && npm install && npm run build",
     "deploy": "gh-pages -d example/build"
   },
