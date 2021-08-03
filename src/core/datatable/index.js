@@ -36,13 +36,13 @@ const DataTableTemplate = (props) => {
             <Grid container item xs={12} direction="column">
                 <Grid item>
                     <SimpleDataTableWrapper
+                        {...props}
                         data={props.data}
                         tableConfig={tableConfig}
                         setTableConfig={setTableConfig}
                         orderBy={orderBy}
                         setOrderBy={setOrderBy}
                         isLoading={isLoading}
-                        {...props}
                     />
                 </Grid>
             </Grid>
