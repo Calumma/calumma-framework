@@ -3,6 +3,29 @@ import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 
+
+const getValuesParemeter = (name, values) => {
+    const propertyLevels = name.split(".");
+
+    if (propertyLevels.length == 1)
+        return values[name]
+    return handleMultiLevelPropertyChange(propertyLevels, values);
+}
+
+const getError = (props) => {
+    let finalError = { hasError: false, helperText: "" }
+
+    if (props.error) {
+        finalError.hasError = props.error;
+        if (props.errorMessage)
+            finalError.message = props.errorMessage;
+    } else if (props.errors && props.errors[props.name]) {
+        finalError = props.errors[props.name];
+    }
+
+    return finalError;
+}
+
 function NumberFormatCustom(props) {
     const { inputRef, onChange, ...other } = props;
 
@@ -50,10 +73,10 @@ const CalummaNumberField = (props) => {
     return (
         <TextField
             id={"calumma-" + Math.random() * 10000}
-            value={props.values[props.name]}
+            value={props.values ? getValuesParemeter(props.name, props.values) : props.value}
             onChange={props.onChange}
-            error={props.errors[props.name] ? props.errors[props.name].hasError : false}
-            helperText={props.errors[props.name] ? props.errors[props.name].message : otherProperties.helperText}
+            error={getError(props).hasError}
+            helperText={getError(props).message}
             InputProps={{ inputComponent: NumberFormatCustom }}
             {...props}
         />
