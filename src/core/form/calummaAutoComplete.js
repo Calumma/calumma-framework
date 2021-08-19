@@ -133,7 +133,7 @@ const CalummaAutoComplete = (props) => {
                 }
             }
             options={props.options}
-            getOptionLabel={option => option[props.field] ? option[props.field].toString() : ""}
+            getOptionLabel={option => option[props.field] ? `${option[props.field]}` : ""}
             groupBy={props.groupBy ? option => option[props.groupBy] : undefined}
             loading={loading}
             disableCloseOnSelect={props.disableCloseOnSelect}
