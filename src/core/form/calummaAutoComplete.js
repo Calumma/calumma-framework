@@ -45,7 +45,10 @@ const getError = (props) => {
     let finalError = { hasError: false, helperText: "" }
 
     if (props.error) {
-        finalError.hasError = props.error;
+        if(props.error['hasError'])
+            finalError.hasError = props.error['hasError'];
+        else
+            finalError.hasError = false;
         if (props.errorMessage)
             finalError.message = props.errorMessage;
     } else if (props.errors[props.name]) {
